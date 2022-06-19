@@ -1,10 +1,10 @@
 package main
 
 import (
-	"stashcurrency.dev/core/server"
+	"stashcurrency.dev/core/app"
 )
 
 func main() {
 
-	server.Run()
+	app.Run()
 }
