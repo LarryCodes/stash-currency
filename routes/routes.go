@@ -9,4 +9,8 @@ var Routes = []route{
 		Path:       "/",
 		HandleFunc: controllers.Index,
 	},
+	route{
+		Path:       "/convert",
+		HandleFunc: controllers.Convert,
+	},
 }
