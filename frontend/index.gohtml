@@ -8,26 +8,27 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+    {{$data := .}}
     <div class="container">
         <div class="row mt-5">
             <div class="col">
                 <h1>Stash Currency Converter</h1>
             </div>
         </div>
-        <form class="mt-5">
+        <form class="mt-5" action="/convert" method="POST">
             <div class="row">
                 <div class="col">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Amount</label>
-                        <input type="number" class="form-control" id="amount" placeholder="Amount">
+                        <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
-                        <label for="currency-1" class="form-label">From Currency</label>
-                        <select class="form-select form-select-md mb-3" id="currency-1" name="currency-1">
+                        <label for="from" class="form-label">From Currency</label>
+                        <select class="form-select form-select-md mb-3" id="from" name="from">
                             <option disabled selected value="">Select Currency</option>
-                            {{range $key, $value := .currency_data.Currencies}}
+                            {{range $key, $value := $data.currency_data.Currencies}}
                                 <option value="{{$key}}">{{$value}}</option>
                             {{end}}
                         </select>
@@ -35,10 +36,10 @@
                 </div>
                 <div class="col">
                     <div class="mb-3">
-                        <label for="currency-2" class="form-label">To Currency</label>
-                        <select class="form-select form-select-md mb-3" id="currency21" name="currency-2">
+                        <label for="to" class="form-label">To Currency</label>
+                        <select class="form-select form-select-md mb-3" id="to" name="to">
                             <option disabled selected value="">Select Currency</option>
-                            {{range $key, $value := .currency_data.Currencies}}
+                            {{range $key, $value := $data.currency_data.Currencies}}
                                 <option value="{{$key}}">{{$value}}</option>
                             {{end}}
                         </select>
@@ -51,6 +52,10 @@
                 </div>
             </div>
         </form>
+        {{if and $data.conversion_result $data.conversion_result.Success}}
+            <h1>Conversion Result!</h1>
+            <p>{{$data.conversion_result.Query.Amount}} {{$data.conversion_result.Query.From}} == {{$data.conversion_result.Result}}{{$data.conversion_result.Query.To}}</p>
+        {{end}}
     </div>
 </body>
 
