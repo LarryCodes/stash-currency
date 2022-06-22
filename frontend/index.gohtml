@@ -20,16 +20,24 @@
                 <div class="col">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
+                        {{if and $data.conversion_result $data.conversion_result.Success}}
+                            <input type="number" class="form-control" id="amount" name="amount" value="{{$data.conversion_result.Query.Amount}}" placeholder="Amount">
+                        {{else}}
+                            <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount">
+                        {{end}}
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
                         <label for="from" class="form-label">From Currency</label>
                         <select class="form-select form-select-md mb-3" id="from" name="from">
-                            <option disabled selected value="">Select Currency</option>
+                            <option value="">Select Currency</option>
                             {{range $key, $value := $data.currency_data.Currencies}}
-                                <option value="{{$key}}">{{$value}}</option>
+                                {{if and $data.conversion_result (eq $data.conversion_result.Query.From $key)}}
+                                    <option value="{{$key}}" selected>{{$value}}</option>
+                                {{else}}
+                                    <option value="{{$key}}">{{$value}}</option>
+                                {{end}}
                             {{end}}
                         </select>
                     </div>
@@ -38,9 +46,13 @@
                     <div class="mb-3">
                         <label for="to" class="form-label">To Currency</label>
                         <select class="form-select form-select-md mb-3" id="to" name="to">
-                            <option disabled selected value="">Select Currency</option>
+                            <option  value="">Select Currency</option>
                             {{range $key, $value := $data.currency_data.Currencies}}
-                                <option value="{{$key}}">{{$value}}</option>
+                                {{if and $data.conversion_result (eq $data.conversion_result.Query.To $key)}}
+                                    <option value="{{$key}}" selected>{{$value}}</option>
+                                {{else}}
+                                    <option value="{{$key}}">{{$value}}</option>
+                                {{end}}
                             {{end}}
                         </select>
                     </div>
@@ -54,7 +66,7 @@
         </form>
         {{if and $data.conversion_result $data.conversion_result.Success}}
             <h1>Conversion Result!</h1>
-            <p>{{$data.conversion_result.Query.Amount}} {{$data.conversion_result.Query.From}} == {{$data.conversion_result.Result}}{{$data.conversion_result.Query.To}}</p>
+            <p>{{$data.conversion_result.Query.Amount}}{{$data.conversion_result.Query.From}} == {{$data.conversion_result.Result}}{{$data.conversion_result.Query.To}}</p>
         {{end}}
     </div>
 </body>
