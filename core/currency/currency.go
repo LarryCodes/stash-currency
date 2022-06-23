@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
-
-// var key string = "0en0LKbSXjcIPe2O2k5KiudiCwUPE5EN"
-var key string = "z8Td3vNAmZQb6Lx2yDyEIPYryFYhGGdp"
 
 type CurrencyList struct {
 	Currencies map[string]string `json:"currencies"`
@@ -39,7 +37,7 @@ func LoadCurrencyList() (*CurrencyList, error) {
 
 	client := &http.Client{}
 	request, err := http.NewRequest("GET", url, nil)
-	request.Header.Set("apikey", key)
+	request.Header.Set("apikey", os.Getenv("API_KEY"))
 
 	if err != nil {
 		return nil, err
@@ -65,7 +63,7 @@ func Convert(amount int, from string, to string) (*ConversionResult, error) {
 	client := &http.Client{}
 
 	req, err := http.NewRequest("GET", url, nil)
-	req.Header.Set("apikey", key)
+	req.Header.Set("apikey", os.Getenv("API_KEY"))
 
 	if err != nil {
 		return nil, err
