@@ -66,7 +66,7 @@
         </form>
         {{if and $data.conversion_result $data.conversion_result.Success}}
             <h1>Conversion Result!</h1>
-            <p>{{$data.conversion_result.Query.Amount}}{{$data.conversion_result.Query.From}} == {{$data.conversion_result.Result}}{{$data.conversion_result.Query.To}}</p>
+            <p>{{$data.conversion_result.Query.Amount}}{{$data.conversion_result.Query.From}} == {{$data.conversion_result.FormattedResult}}{{$data.conversion_result.Query.To}}</p>
         {{end}}
     </div>
 </body>

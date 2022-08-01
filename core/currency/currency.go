@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 type CurrencyList struct {
@@ -13,12 +14,13 @@ type CurrencyList struct {
 }
 
 type ConversionResult struct {
-	Result     float64         `json:"result"`
-	Success    bool            `json:"success"`
-	Date       string          `json:"date"`
-	Historical bool            `json:"historical"`
-	Info       ConversionInfo  `json:"info"`
-	Query      ConversionQuery `json:"query"`
+	Result          float64         `json:"result"`
+	Success         bool            `json:"success"`
+	Date            string          `json:"date"`
+	Historical      bool            `json:"historical"`
+	Info            ConversionInfo  `json:"info"`
+	Query           ConversionQuery `json:"query"`
+	FormattedResult string
 }
 
 type ConversionInfo struct {
@@ -30,6 +32,10 @@ type ConversionQuery struct {
 	Amount float64 `json:"amount"`
 	From   string  `json:"from"`
 	To     string  `json:"to"`
+}
+
+func (result *ConversionResult) FormatResult() {
+	result.FormattedResult = strconv.FormatFloat(result.Result, 'f', -1, 64)
 }
 
 func LoadCurrencyList() (*CurrencyList, error) {
@@ -75,12 +81,15 @@ func Convert(amount int, from string, to string) (*ConversionResult, error) {
 		return nil, err
 	}
 
-	fmt.Println(string(body))
 	var data ConversionResult
 	if err = json.Unmarshal(body, &data); err != nil {
 		return nil, err
 	}
 
-	return &data, nil
+	return_result := &data
+	return_result.FormatResult()
+
+	fmt.Println(data)
+	return return_result, nil
 
 }
