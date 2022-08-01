@@ -29,13 +29,15 @@ type ConversionInfo struct {
 }
 
 type ConversionQuery struct {
-	Amount float64 `json:"amount"`
-	From   string  `json:"from"`
-	To     string  `json:"to"`
+	Amount          float64 `json:"amount"`
+	From            string  `json:"from"`
+	To              string  `json:"to"`
+	FormattedAmount string
 }
 
 func (result *ConversionResult) FormatResult() {
 	result.FormattedResult = strconv.FormatFloat(result.Result, 'f', -1, 64)
+	result.Query.FormattedAmount = strconv.FormatFloat(result.Query.Amount, 'f', -1, 64)
 }
 
 func LoadCurrencyList() (*CurrencyList, error) {
